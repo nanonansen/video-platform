@@ -1,0 +1,18 @@
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+form label {
+    display: block;
+    margin-bottom: 16px;
+}
+
+form label input {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    min-height: 40px;
+    padding: 0 8px;
+    font-size: 100%;
+}

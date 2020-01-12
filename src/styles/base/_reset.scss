@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    min-height: 100%;
+}
+
+body {
+    font-family: sans-serif;
+    line-height: 1.5;
+    color: $darkgray;
+}
+
+button,
+input {
+    font-size: 100%;
+    box-shadow: none;
+    border: none;
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

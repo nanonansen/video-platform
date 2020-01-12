@@ -17,7 +17,8 @@ const Header = () => {
     };
     if (currentUser) {
         return (
-            <header>
+            <header className="site-header loggedIn">
+                <div className="site-header__branding">Logo</div>
                 <div>
                     Hello,
                     {currentUser.displayName
@@ -33,10 +34,21 @@ const Header = () => {
         );
     } else {
         return (
-            <header>
-                <Link to="/">Home</Link>
-                <Link to="Login">Login</Link>
-                <Link to="Signup">Sign Up</Link>
+            <header className="site-header">
+                <div className="site-header__branding">
+                    <Link to="/">Logo</Link>
+                </div>
+                <div className="site-header__search">Search</div>
+                <nav className="site-header__navigation">
+                    <Link to="Login">
+                        <button className="button">Login</button>
+                    </Link>
+                    <Link to="Signup">
+                        <button className="button button--primary">
+                            Sign Up
+                        </button>
+                    </Link>
+                </nav>
             </header>
         );
     }

@@ -1,0 +1,13 @@
+.input {
+    min-height: 36px;
+    padding: 12px;
+    background: $gray;
+
+    &:focus {
+        background: darken($color: $gray, $amount: 3);
+    }
+
+    &--large {
+        min-height: 48px;
+    }
+}

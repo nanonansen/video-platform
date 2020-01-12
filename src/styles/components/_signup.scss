@@ -1,0 +1,32 @@
+.signup {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $lightgray;
+    &-wrapper {
+        padding: 40px;
+        min-width: 320px;
+        max-width: 420px;
+        flex: 1;
+        border: 1px solid $lightgray;
+        background: $white;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: $boxShadow-large;
+        .button {
+            width: 100%;
+        }
+    }
+    &__title {
+        margin-bottom: 32px;
+    }
+    &__social-login {
+        margin-bottom: 32px;
+        display: flex;
+        justify-content: center;
+    }
+    &__email {
+        margin-bottom: 32px;
+    }
+}

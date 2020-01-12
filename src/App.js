@@ -17,7 +17,7 @@ function App() {
         <AuthProvider>
             <Router>
                 <Header />
-                <div>
+                <main>
                     <PrivateRoute
                         exact
                         path="/dashboard"
@@ -27,7 +27,7 @@ function App() {
                     <Route exact path="/" component={Home} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={SignUp} />
-                </div>
+                </main>
             </Router>
         </AuthProvider>
     );

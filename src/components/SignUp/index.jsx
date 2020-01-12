@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { withRouter, Link } from "react-router-dom";
 import app, { provider, db } from "../../base";
+import Input from "../Input";
 
 const SignUp = ({ history }) => {
     //handle Sign Up with email and password
@@ -86,34 +87,55 @@ const SignUp = ({ history }) => {
     );
 
     return (
-        <div>
-            <h1>Sign Up</h1>
-            <form onSubmit={handleSignUp} autoComplete="off">
-                <label htmlFor="email">
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Email"
-                        autoComplete="vavadva"
-                    />
-                </label>
-                <label htmlFor="password">
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        placeholder="Password"
-                        autoComplete="vavadva"
-                    />
-                </label>
-                <button type="submit">Sign Up</button>
-            </form>
-            <button onClick={handleSignUpWithGoogle}>
-                Sign In with Google
-            </button>
-            <div>
-                Already have an Account? <Link to="/login">Login</Link>
+        <div className="signup">
+            <div className="signup-wrapper">
+                <h1 className="signup__title fs-xl">Create an Account</h1>
+                <div className="signup__social-login">
+                    <button
+                        className="button button--google-signup button--large"
+                        onClick={handleSignUpWithGoogle}
+                    >
+                        <img
+                            className="google-signup-icon"
+                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                            alt="google logo"
+                        />
+                        Continue with Google
+                    </button>
+                </div>
+                <div className="signup__email">
+                    <form onSubmit={handleSignUp} autoComplete="off">
+                        <label htmlFor="email">
+                            <Input
+                                className="input input--large"
+                                type="email"
+                                name="email"
+                                id="email"
+                                placeholder="Email"
+                                autoComplete={false}
+                            />
+                        </label>
+                        <label htmlFor="password">
+                            <Input
+                                className="input input--large"
+                                type="password"
+                                name="password"
+                                id="password"
+                                placeholder="Create a password"
+                                autoComplete={false}
+                            />
+                        </label>
+                        <button
+                            className="button button--primary button--large"
+                            type="submit"
+                        >
+                            Sign Up
+                        </button>
+                    </form>
+                </div>
+                <div>
+                    Already have an Account? <Link to="/login">Login</Link>
+                </div>
             </div>
         </div>
     );
