@@ -10,7 +10,6 @@ import DashBoard from "./components/DashBoard";
 import { AuthProvider } from "./Auth";
 import PrivateRoute from "./PrivateRoute";
 import Header from "./components/Header";
-//import AddVideo from "./components/AddVideo";
 import Admin from "./components/Admin";
 
 function App() {

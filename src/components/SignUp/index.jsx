@@ -17,10 +17,12 @@ const SignUp = ({ history }) => {
                         const newUserID = app.auth().currentUser.uid;
                         const newUserEmail = app.auth().currentUser.email;
                         db.collection("users")
-                            .add({
+                            .doc(newUserID)
+                            .set({
                                 userName: "",
                                 email: newUserEmail,
-                                uid: newUserID
+                                uid: newUserID,
+                                role: "Reader"
                             })
                             .then(docRef => {
                                 console.log(
@@ -45,14 +47,40 @@ const SignUp = ({ history }) => {
     //handle Sign Up With Google
     const handleSignUpWithGoogle = useCallback(
         async event => {
+            event.preventDefault();
             try {
                 await app
                     .auth()
                     .signInWithPopup(provider)
-                    .then(result => history.push("/dashboard"));
+                    .then(() => {
+                        console.log("USER UID", app.auth().currentUser.uid);
+                        const newUserID = app.auth().currentUser.uid;
+                        const newUserEmail = app.auth().currentUser.email;
+                        db.collection("users")
+                            .doc(newUserID)
+                            .set(
+                                {
+                                    userName: "",
+                                    email: newUserEmail,
+                                    uid: newUserID,
+                                    role: "Reader"
+                                },
+                                { merge: true }
+                            )
+                            .then(docRef => {
+                                console.log(
+                                    "Document written with ID: ",
+                                    docRef.id
+                                );
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                    });
             } catch (error) {
                 alert(error);
             }
+            history.push("/dashboard");
         },
         [history]
     );
