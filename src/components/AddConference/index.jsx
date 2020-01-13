@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { db } from "../../base";
 
+import Input from "../Input";
+
 const AddConference = () => {
     const [formData, setFormData] = useState({
         name: "",
@@ -44,7 +46,7 @@ const AddConference = () => {
 
     return (
         <div>
-            <h1>Add new Conference</h1>
+            <h1 className="fs-xl">Add new Conference</h1>
             <form onSubmit={handleFormSubmit}>
                 {Object.keys(formData).map((input, index) => {
                     console.log(formData[input]);
@@ -52,7 +54,8 @@ const AddConference = () => {
                     return (
                         <label htmlFor={input} key={index}>
                             {input}
-                            <input
+                            <Input
+                                className="input"
                                 type="text"
                                 name={input}
                                 value={formData[input]}
@@ -67,7 +70,9 @@ const AddConference = () => {
                         </label>
                     );
                 })}
-                <button type="submit">Add Conference</button>
+                <button className="button" type="submit">
+                    Add Conference
+                </button>
             </form>
         </div>
     );

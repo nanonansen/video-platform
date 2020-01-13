@@ -103,6 +103,7 @@ const SignUp = ({ history }) => {
                         Continue with Google
                     </button>
                 </div>
+                <span className="signup__seperator">or</span>
                 <div className="signup__email">
                     <form onSubmit={handleSignUp} autoComplete="off">
                         <label htmlFor="email">

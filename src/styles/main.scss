@@ -7,6 +7,10 @@
 @import "./atoms/button";
 @import "./atoms/input";
 
+//Layout
+@import "./components/wrapper";
+
 //Components
 @import "./components/header";
 @import "./components/signup";
+@import "./components/login";

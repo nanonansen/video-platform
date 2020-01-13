@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { db } from "../../base";
 
+import Input from "../Input";
+
 const AddVideo = ({ history }) => {
     const [initialFormData, setInitialFormData] = useState({
         name: "",
@@ -88,7 +90,7 @@ const AddVideo = ({ history }) => {
 
     return (
         <div>
-            <h1>Submit new Video</h1>
+            <h1 className="fs-xl">Submit new Video</h1>
             <form onSubmit={handleFormSubmit}>
                 {Object.keys(initialFormData).map((input, index) => {
                     if (input === "conferences") {
@@ -119,7 +121,8 @@ const AddVideo = ({ history }) => {
                     return (
                         <label htmlFor={input} key={index}>
                             {input}
-                            <input
+                            <Input
+                                className="input"
                                 type="text"
                                 name={input}
                                 value={formData[input]}
@@ -134,7 +137,9 @@ const AddVideo = ({ history }) => {
                         </label>
                     );
                 })}
-                <button type="submit">Submit Video</button>
+                <button className="button" type="submit">
+                    Submit Video
+                </button>
             </form>
         </div>
     );
