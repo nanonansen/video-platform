@@ -31,7 +31,7 @@ const VideoList = () => {
     }, []);
     if (isLoading) return <div>Is Loading...</div>;
     return (
-        <div className="video-list">
+        <div className="video-list auto-grid">
             {videoData.map(video => (
                 <VideoListItem key={video.uid} data={video} />
             ))}

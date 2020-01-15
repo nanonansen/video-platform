@@ -6,7 +6,7 @@ import Wrapper from "../Wrapper";
 const Admin = () => {
     return (
         <div>
-            <Wrapper className="wrapper wrapper--small">
+            <Wrapper className="wrapper--small">
                 <AddVideo />
                 <AddConference />
             </Wrapper>

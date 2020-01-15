@@ -9,6 +9,8 @@ import { AuthProvider } from "./Auth";
 import PrivateRoute from "./PrivateRoute";
 import Header from "./components/Header";
 import Admin from "./components/Admin";
+import VideoDetail from "./components/VideoDetail";
+import ConferenceDetail from "./components/ConferenceDetail";
 
 function App() {
     return (
@@ -25,6 +27,12 @@ function App() {
                     <Route exact path="/" component={Home} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={SignUp} />
+                    <Route exact path="/video/:id" component={VideoDetail} />
+                    <Route
+                        exact
+                        path="/conference/:id"
+                        component={ConferenceDetail}
+                    />
                 </main>
             </Router>
         </AuthProvider>

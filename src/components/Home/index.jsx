@@ -1,12 +1,13 @@
 import React from "react";
 import VideoList from "../VideoList";
+import Wrapper from "../Wrapper";
 
 const Home = () => {
     return (
-        <div>
+        <Wrapper>
             <h1>Home Component</h1>
             <VideoList />
-        </div>
+        </Wrapper>
     );
 };
 

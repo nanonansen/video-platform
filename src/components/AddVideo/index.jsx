@@ -32,10 +32,13 @@ const AddVideo = ({ history }) => {
             [name]: value
         }));
     };
-    const handleSelectChange = (name, value) => {
+    const handleSelectChange = (name, value, e) => {
+        let dataset = e.target.options[e.target.selectedIndex].dataset.id;
+        console.log(dataset.id);
+
         setFormData(prevState => ({
             ...prevState,
-            [name]: value
+            [name]: { name: value, id: dataset }
         }));
     };
     const handleFormSubmit = e => {
@@ -61,11 +64,15 @@ const AddVideo = ({ history }) => {
                 .catch(error => {
                     console.log(error);
                 });
+
             history.push("/dashboard");
         } catch (error) {
             console.log(error);
         }
     };
+
+    //TODO: ADD VIDEO TO CONFERENCE ARRAY WITH BATCH WRITE
+    //https://firebase.google.com/docs/firestore/manage-data/transactions#batched-writes
 
     //Get All Conferences
     useEffect(() => {
@@ -99,17 +106,20 @@ const AddVideo = ({ history }) => {
                                 {input}
                                 <select
                                     name={input}
-                                    id={input}
                                     onChange={e =>
                                         handleSelectChange(
                                             input,
-                                            e.target.value
+                                            e.target.value,
+                                            e
                                         )
                                     }
                                 >
                                     {initialFormData[input].map(option => {
                                         return (
-                                            <option key={option.uid}>
+                                            <option
+                                                key={option.uid}
+                                                data-id={option.uid}
+                                            >
                                                 {option.name}
                                             </option>
                                         );

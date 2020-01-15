@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../Auth";
 import VideoList from "../VideoList";
+import Wrapper from "../Wrapper";
 
 const DashBoard = () => {
+    const { currentUser } = useContext(AuthContext);
     return (
-        <div>
-            <h1>This is the secret Dashboard</h1>
+        <Wrapper>
+            <h1 className="fs-xl">
+                Hello,
+                {currentUser.displayName
+                    ? currentUser.displayName
+                    : currentUser.email}{" "}
+                ({currentUser.role})
+            </h1>
             <VideoList />
-        </div>
+        </Wrapper>
     );
 };
 

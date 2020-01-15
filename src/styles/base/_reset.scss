@@ -13,6 +13,14 @@ body {
     font-family: sans-serif;
     line-height: 1.5;
     color: $darkgray;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+    list-style: none;
 }
 
 button,
@@ -26,4 +34,9 @@ input {
 a {
     text-decoration: none;
     color: inherit;
+}
+
+img {
+    max-width: 100%;
+    display: block;
 }
