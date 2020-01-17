@@ -1,21 +1,14 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../Auth";
 import { Link } from "react-router-dom";
-import app from "../../base";
+import { withFirebase } from "../Firebase";
 
 import Input from "../Input";
 
-const Header = () => {
+const Header = ({ firebase }) => {
     const { currentUser } = useContext(AuthContext);
-    const doSignOut = () => {
-        app.auth()
-            .signOut()
-            .then(() => {
-                console.log("sign out");
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    const handleSignOut = () => {
+        firebase.doSignOut();
     };
     if (currentUser) {
         return (
@@ -34,7 +27,7 @@ const Header = () => {
                         <Link to="/admin">Admin</Link>
                     )}
                     <Link to="/dashboard">Dashboard</Link>
-                    <button className="button" onClick={doSignOut}>
+                    <button className="button" onClick={handleSignOut}>
                         Sign Out
                     </button>
                 </nav>
@@ -70,4 +63,4 @@ const Header = () => {
     }
 };
 
-export default Header;
+export default withFirebase(Header);

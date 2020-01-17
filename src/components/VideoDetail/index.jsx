@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../../base";
 import { useParams, Link } from "react-router-dom";
+import { withFirebase } from "../Firebase";
 import Wrapper from "../Wrapper";
 
-const VideoDetail = () => {
+const VideoDetail = ({ firebase }) => {
     const [videoData, setVideoData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
@@ -11,7 +11,8 @@ const VideoDetail = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        db.collection("videos")
+        firebase
+            .videos()
             .doc(id)
             .get()
             .then(doc => {
@@ -38,4 +39,4 @@ const VideoDetail = () => {
     );
 };
 
-export default VideoDetail;
+export default withFirebase(VideoDetail);

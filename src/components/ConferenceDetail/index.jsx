@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { db } from "../../base";
+import { withFirebase } from "../Firebase";
 
 import Wrapper from "../Wrapper";
 
-const ConferenceDetail = () => {
+const ConferenceDetail = ({ firebase }) => {
     const [conferenceData, setConferenceData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
@@ -12,7 +12,8 @@ const ConferenceDetail = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        db.collection("conferences")
+        firebase
+            .conferences()
             .doc(id)
             .get()
             .then(doc => {
@@ -36,4 +37,4 @@ const ConferenceDetail = () => {
     );
 };
 
-export default ConferenceDetail;
+export default withFirebase(ConferenceDetail);

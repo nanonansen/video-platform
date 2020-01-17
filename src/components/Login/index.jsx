@@ -1,45 +1,67 @@
-import React, { useCallback, useContext } from "react";
-import { withRouter, Redirect, Link } from "react-router-dom";
-import app, { provider } from "../../base";
+import React, { useState, useContext } from "react";
+import { Link, useHistory, Redirect } from "react-router-dom";
+import { withFirebase } from "../Firebase";
 import { AuthContext } from "../../Auth";
 
 import Input from "../Input";
 
-const Login = ({ history }) => {
-    //handle Login with Email Password
-    const handleLogin = useCallback(
-        async event => {
-            event.preventDefault();
-            const { email, password } = event.target.elements;
-            try {
-                await app
-                    .auth()
-                    .signInWithEmailAndPassword(email.value, password.value);
-                history.push("/dashboard");
-            } catch (error) {
-                alert(error);
-            }
-        },
-        [history]
-    );
+const INITIAL_STATE = {
+    email: "",
+    password: "",
+    error: null
+};
 
-    //handle Login With Google
-    const handleLoginWithGoogle = useCallback(async () => {
-        try {
-            await app
-                .auth()
-                .signInWithPopup(provider)
-                .then(result => {
-                    console.log(result);
-                    history.push("/dashboard");
+const Login = ({ firebase }) => {
+    const [formState, setFormState] = useState({ ...INITIAL_STATE });
+
+    let history = useHistory();
+
+    //handle Login with Email Password
+    const handleLogin = async event => {
+        event.preventDefault();
+        const { email, password } = formState;
+        if (email.length > 0 && password.length > 0) {
+            firebase
+                .doSignInWithEmailAndPassword(email, password)
+                .then(authUser => {
+                    console.log("Login Successfull");
+                })
+                .catch(error => {
+                    setFormState({ ...formState, error: error.message });
                 });
-        } catch (error) {
-            alert(error);
         }
-    }, [history]);
+    };
+
+    const handleLoginWithGoogle = () => {
+        firebase
+            .doSignInWithGoogle()
+            .then(socialAuthUser => {
+                return firebase.user(socialAuthUser.user.uid).set(
+                    {
+                        username: socialAuthUser.user.displayName,
+                        email: socialAuthUser.user.email,
+                        roles: {}
+                    },
+                    { merge: true }
+                );
+            })
+            .then(() => {
+                history.push("/");
+            })
+            .catch(error => {
+                setFormState({ ...formState, error: error.message });
+            });
+    };
+
+    // Input onChange Event
+    const onChange = e => {
+        setFormState({
+            ...formState,
+            [e.currentTarget.name]: e.currentTarget.value
+        });
+    };
 
     const { currentUser } = useContext(AuthContext);
-
     if (currentUser) {
         return <Redirect to="/dashboard" />;
     }
@@ -69,6 +91,8 @@ const Login = ({ history }) => {
                                 className="input input--large"
                                 type="email"
                                 name="email"
+                                value={formState.email}
+                                onChange={onChange}
                                 id="email"
                                 placeholder="Email"
                                 autoComplete={false}
@@ -79,6 +103,8 @@ const Login = ({ history }) => {
                                 className="input input--large"
                                 type="password"
                                 name="password"
+                                value={formState.password}
+                                onChange={onChange}
                                 id="password"
                                 placeholder="Create a password"
                                 autoComplete={false}
@@ -90,6 +116,7 @@ const Login = ({ history }) => {
                         >
                             Login
                         </button>
+                        {formState.error && <p>{formState.error}</p>}
                     </form>
                 </div>
                 <div>
@@ -100,4 +127,4 @@ const Login = ({ history }) => {
     );
 };
 
-export default withRouter(Login);
+export default withFirebase(Login);

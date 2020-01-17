@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
-import app, { db } from "./base";
+import { withFirebase } from "./components/Firebase";
 
 export const AuthContext = React.createContext();
 
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children, firebase }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
-    useEffect(() => {
-        app.auth().onAuthStateChanged(authUser => {
-            if (authUser) {
-                const docRef = db.collection("users").doc(authUser.uid);
+    // useEffect(() => {
+    //     app.auth().onAuthStateChanged(authUser => {
+    //         if (authUser) {
+    //             const docRef = db.collection("users").doc(authUser.uid);
 
-                docRef.get().then(doc => {
-                    const dbUser = doc.data();
-                    authUser = { ...authUser, ...dbUser };
-                    setCurrentUser(authUser);
-                });
-            }
-        });
-    }, []);
+    //             docRef.get().then(doc => {
+    //                 const dbUser = doc.data();
+    //                 authUser = { ...authUser, ...dbUser };
+    //                 setCurrentUser(authUser);
+    //             });
+    //         }
+    //     });
+    // }, []);
     useEffect(() => {
-        app.auth().onAuthStateChanged(setCurrentUser);
+        firebase.auth.onAuthStateChanged(setCurrentUser);
     }, []);
 
     return (
@@ -29,3 +29,4 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
+export default withFirebase(AuthProvider);

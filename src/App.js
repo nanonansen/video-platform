@@ -5,7 +5,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import DashBoard from "./components/DashBoard";
-import { AuthProvider } from "./Auth";
+
 import PrivateRoute from "./PrivateRoute";
 import Header from "./components/Header";
 import Admin from "./components/Admin";
@@ -14,28 +14,27 @@ import ConferenceDetail from "./components/ConferenceDetail";
 
 function App() {
     return (
-        <AuthProvider>
-            <Router>
-                <Header />
-                <main>
-                    <PrivateRoute
+        <Router>
+            <Header />
+            <main>
+                {/* <PrivateRoute
                         exact
                         path="/dashboard"
                         component={DashBoard}
                     />
                     <PrivateRoute exact path="/admin" component={Admin} />
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/signup" component={SignUp} />
-                    <Route exact path="/video/:id" component={VideoDetail} />
-                    <Route
-                        exact
-                        path="/conference/:id"
-                        component={ConferenceDetail}
-                    />
-                </main>
-            </Router>
-        </AuthProvider>
+                */}
+                <Route exact path="/" component={Home} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/signup" component={SignUp} />
+                <Route exact path="/video/:id" component={VideoDetail} />
+                <Route
+                    exact
+                    path="/conference/:id"
+                    component={ConferenceDetail}
+                />
+            </main>
+        </Router>
     );
 }
 

@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../../base";
+import { withFirebase } from "../Firebase";
 import VideoListItem from "../VideoListItem";
 
-const VideoList = () => {
+const VideoList = ({ firebase }) => {
     const [videoData, setVideoData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         setIsLoading(true);
-        const unsubscribe = db
-            .collection("videos")
-            .onSnapshot(querySnapshot => {
-                if (querySnapshot.size) {
-                    let videos = [];
-                    querySnapshot.forEach(doc => {
-                        videos.push({
-                            ...doc.data(),
-                            uid: doc.ref.id
-                        });
+        const unsubscribe = firebase.videos().onSnapshot(snapshot => {
+            if (snapshot.size) {
+                let videos = [];
+                snapshot.forEach(doc => {
+                    videos.push({
+                        ...doc.data(),
+                        uid: doc.ref.id
                     });
-                    setVideoData(videos);
-                    setIsLoading(false);
-                } else {
-                    //It's empty
-                    setIsLoading(false);
-                }
-            });
+                });
+                setVideoData(videos);
+                setIsLoading(false);
+            } else {
+                //It's empty
+                setIsLoading(false);
+            }
+        });
         return () => {
             unsubscribe();
         };
@@ -39,4 +37,4 @@ const VideoList = () => {
     );
 };
 
-export default VideoList;
+export default withFirebase(VideoList);
