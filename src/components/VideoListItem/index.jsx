@@ -18,7 +18,7 @@ const VideoListItem = props => {
     }
 
     return (
-        <div className="single-video">
+        <div className="video-teaser">
             <Link to={`/video/${data.uid}`}>
                 <img src={videoImgUrl} alt="" />
                 <h2>{data.name}</h2>

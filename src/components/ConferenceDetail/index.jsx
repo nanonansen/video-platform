@@ -34,14 +34,16 @@ const ConferenceDetail = ({ firebase }) => {
         <Wrapper>
             <h1>{conferenceData.name}</h1>
             <p>{conferenceData.description}</p>
-            <div>
-                <h2>All Videos</h2>
-                <div className="auto-grid">
-                    {conferenceData.videos.map(video => (
-                        <VideoListItem data={video} key={video.uid} />
-                    ))}
+            {conferenceData.videos && (
+                <div>
+                    <h2>All Videos</h2>
+                    <div className="auto-grid">
+                        {conferenceData.videos.map(video => (
+                            <VideoListItem data={video} key={video.uid} />
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
         </Wrapper>
     );
 };

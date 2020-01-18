@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 import Input from "../Input";
 import Button from "../Button";
+import Wrapper from "../Wrapper";
 
 const AddVideo = ({ firebase }) => {
     const [initialFormData, setInitialFormData] = useState({
@@ -107,7 +108,7 @@ const AddVideo = ({ firebase }) => {
     }, [firebase]);
 
     return (
-        <div>
+        <Wrapper className="wrapper--small">
             <h1 className="fs-xl">Submit new Video</h1>
             <form onSubmit={handleFormSubmit}>
                 {Object.keys(initialFormData).map((input, index) => {
@@ -154,7 +155,7 @@ const AddVideo = ({ firebase }) => {
                     Submit Video
                 </Button>
             </form>
-        </div>
+        </Wrapper>
     );
 };
 

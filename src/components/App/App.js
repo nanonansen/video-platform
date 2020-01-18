@@ -11,6 +11,8 @@ import Header from "../Header";
 import Admin from "../Admin";
 import VideoDetail from "../VideoDetail";
 import ConferenceDetail from "../ConferenceDetail";
+import AddVideo from "../AddVideo";
+import AddConference from "../AddConference";
 
 function App() {
     return (
@@ -28,6 +30,12 @@ function App() {
                     exact
                     path="/conference/:id"
                     component={ConferenceDetail}
+                />
+                <Route exact path={"/admin/add_video"} component={AddVideo} />
+                <Route
+                    exact
+                    path={"/admin/add_conference"}
+                    component={AddConference}
                 />
             </main>
         </Router>

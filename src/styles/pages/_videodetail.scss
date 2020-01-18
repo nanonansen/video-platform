@@ -1,0 +1,31 @@
+.videoWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    @include mq(lg) {
+        flex-direction: row;
+    }
+}
+.video {
+    &__player {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        background: $lightgray;
+        padding: 1rem;
+        @include mq(lg) {
+            width: 70%;
+        }
+    }
+    &__meta {
+        width: 100%;
+        padding: 1rem;
+        @include mq(lg) {
+            width: 30%;
+        }
+    }
+    &__related {
+        margin-top: 4rem;
+    }
+}

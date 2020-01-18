@@ -1,14 +1,14 @@
 import React from "react";
-import AddVideo from "../AddVideo";
-//import AddConference from "../AddConference";
+
 import Wrapper from "../Wrapper";
+import { Link } from "react-router-dom";
 
 const Admin = () => {
     return (
         <div>
-            <Wrapper className="wrapper--small">
-                <AddVideo />
-                {/* <AddConference /> */}
+            <Wrapper>
+                <Link to={"/admin/add_video"}>Add Video</Link>
+                <Link to={"/admin/add_conference"}>Add Conference</Link>
             </Wrapper>
         </div>
     );
