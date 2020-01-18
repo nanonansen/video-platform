@@ -25,7 +25,7 @@ const VideoDetail = ({ firebase }) => {
                     setIsLoading(false);
                 }
             });
-    }, [id]);
+    }, [id, firebase]);
     if (isLoading) return <div>Is Loading...</div>;
     return (
         <Wrapper>

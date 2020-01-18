@@ -26,7 +26,7 @@ const VideoList = ({ firebase }) => {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [firebase]);
     if (isLoading) return <div>Is Loading...</div>;
     return (
         <div className="video-list auto-grid">

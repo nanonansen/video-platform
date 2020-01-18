@@ -20,8 +20,9 @@ const AuthProvider = ({ children, firebase }) => {
     //     });
     // }, []);
     useEffect(() => {
+        console.log("USE EFFECT");
         firebase.auth.onAuthStateChanged(setCurrentUser);
-    }, []);
+    }, [firebase.auth]);
 
     return (
         <AuthContext.Provider value={{ currentUser }}>

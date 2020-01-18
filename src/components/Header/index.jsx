@@ -27,6 +27,7 @@ const Header = ({ firebase }) => {
                         <Link to="/admin">Admin</Link>
                     )}
                     <Link to="/dashboard">Dashboard</Link>
+                    <Link to="/admin">Admin</Link>
                     <button className="button" onClick={handleSignOut}>
                         Sign Out
                     </button>
@@ -46,10 +47,10 @@ const Header = ({ firebase }) => {
                     />
                 </div>
                 <nav className="site-header__navigation">
-                    <Link to="Login">
+                    <Link to="/login">
                         <button className="button">Login</button>
                     </Link>
-                    <Link to="Signup">
+                    <Link to="/signup">
                         <button
                             className="button button--primary
                         "

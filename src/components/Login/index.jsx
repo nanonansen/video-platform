@@ -26,6 +26,9 @@ const Login = ({ firebase }) => {
                 .then(authUser => {
                     console.log("Login Successfull");
                 })
+                .then(() => {
+                    history.push("/");
+                })
                 .catch(error => {
                     setFormState({ ...formState, error: error.message });
                 });

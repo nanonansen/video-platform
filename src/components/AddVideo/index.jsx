@@ -1,22 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { withRouter } from "react-router-dom";
-import { db } from "../../base";
-
+import { useHistory } from "react-router-dom";
+import { withFirebase } from "../Firebase";
 import Input from "../Input";
+import Button from "../Button";
 
-const AddVideo = ({ history }) => {
+const AddVideo = ({ firebase }) => {
     const [initialFormData, setInitialFormData] = useState({
-        name: "",
-        description: "",
-        videoUrl: "",
-        duration: 25,
-        year: 2020,
-        categories: ["Design", "UX-Design"],
-        conferences: [],
-        speaker: "",
-        saveCount: 0
-    });
-    const [formData, setFormData] = useState({
         name: "",
         description: "",
         videoUrl: "",
@@ -26,58 +15,80 @@ const AddVideo = ({ history }) => {
         conferences: [],
         speaker: ""
     });
-    const handleInputChange = (name, value) => {
+    const [formData, setFormData] = useState({
+        name: "",
+        description: "",
+        videoUrl: "",
+        duration: 25,
+        year: 2020,
+        categories: [],
+        conference: [],
+        speaker: ""
+    });
+    const [selectValue, setSelectValue] = useState({ name: "", uid: null });
+
+    let history = useHistory();
+
+    const handleInputChange = e => {
+        let name = e.target.name;
+        let value = e.target.value;
         setFormData(prevState => ({
             ...prevState,
             [name]: value
         }));
     };
-    const handleSelectChange = (name, value, e) => {
-        let dataset = e.target.options[e.target.selectedIndex].dataset.id;
-        console.log(dataset.id);
-
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: { name: value, id: dataset }
-        }));
+    const handleSelectChange = e => {
+        let id = e.target.options[e.target.selectedIndex].dataset.id;
+        setSelectValue({ name: e.target.value, uid: id });
     };
+
     const handleFormSubmit = e => {
         e.preventDefault();
-        console.log("New Video", formData);
-        doAddVideoToCollection();
+        if (selectValue.uid !== null) {
+            doAddVideoToCollection();
+        }
     };
 
     // Add new Video to Firestore Collection
     const doAddVideoToCollection = async () => {
+        let confId = selectValue.uid;
+        let videoUid = firebase.videos().doc();
+
         const newVideoData = {
             ...formData,
             date: Date.now(),
-            saveCount: 0
+            saveCount: 0,
+            uid: videoUid.id,
+            conference: selectValue
         };
-        try {
-            await db
-                .collection("videos")
-                .add(newVideoData)
-                .then(docRef => {
-                    console.log("Document written with ID: ", docRef.id);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+        const videoRefObj = {
+            name: formData.name,
+            uid: videoUid.id
+        };
 
-            history.push("/dashboard");
-        } catch (error) {
-            console.log(error);
-        }
+        let confRef = firebase.conferences().doc(confId);
+        let videoRef = firebase.videos().doc(videoUid.id);
+
+        let batch = firebase.db.batch();
+
+        batch.set(videoRef, newVideoData);
+        batch.update(confRef, {
+            videos: firebase.fieldValue.arrayUnion(videoRefObj)
+        });
+
+        // Commit the batch
+        batch.commit().then(() => {
+            console.log("Success");
+        });
+
+        history.push("/dashboard");
     };
-
-    //TODO: ADD VIDEO TO CONFERENCE ARRAY WITH BATCH WRITE
-    //https://firebase.google.com/docs/firestore/manage-data/transactions#batched-writes
 
     //Get All Conferences
     useEffect(() => {
         const conferences = [];
-        db.collection("conferences")
+        firebase
+            .conferences()
             .get()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
@@ -93,7 +104,7 @@ const AddVideo = ({ history }) => {
                     conferences: conferences
                 }));
             });
-    }, []);
+    }, [firebase]);
 
     return (
         <div>
@@ -106,14 +117,10 @@ const AddVideo = ({ history }) => {
                                 {input}
                                 <select
                                     name={input}
-                                    onChange={e =>
-                                        handleSelectChange(
-                                            input,
-                                            e.target.value,
-                                            e
-                                        )
-                                    }
+                                    value={selectValue.name}
+                                    onChange={handleSelectChange}
                                 >
+                                    <option value="">Select Conference</option>
                                     {initialFormData[input].map(option => {
                                         return (
                                             <option
@@ -137,22 +144,18 @@ const AddVideo = ({ history }) => {
                                 name={input}
                                 value={formData[input]}
                                 placeholder={input}
-                                onChange={e =>
-                                    handleInputChange(
-                                        e.target.name,
-                                        e.target.value
-                                    )
-                                }
+                                onChange={handleInputChange}
                             />
                         </label>
                     );
                 })}
-                <button className="button" type="submit">
+
+                <Button type={"submit"} className={"button--primary"}>
                     Submit Video
-                </button>
+                </Button>
             </form>
         </div>
     );
 };
 
-export default withRouter(AddVideo);
+export default withFirebase(AddVideo);

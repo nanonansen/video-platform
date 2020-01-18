@@ -19,6 +19,8 @@ class Firebase {
         this.auth = app.auth();
         this.db = app.firestore();
 
+        this.fieldValue = app.firestore.FieldValue;
+
         this.googleProvider = new app.auth.GoogleAuthProvider();
     }
 

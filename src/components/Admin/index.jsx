@@ -1,6 +1,6 @@
 import React from "react";
 import AddVideo from "../AddVideo";
-import AddConference from "../AddConference";
+//import AddConference from "../AddConference";
 import Wrapper from "../Wrapper";
 
 const Admin = () => {
@@ -8,7 +8,7 @@ const Admin = () => {
         <div>
             <Wrapper className="wrapper--small">
                 <AddVideo />
-                <AddConference />
+                {/* <AddConference /> */}
             </Wrapper>
         </div>
     );
