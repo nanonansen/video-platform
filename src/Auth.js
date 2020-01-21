@@ -6,23 +6,13 @@ export const AuthContext = React.createContext();
 const AuthProvider = ({ children, firebase }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
-    // useEffect(() => {
-    //     app.auth().onAuthStateChanged(authUser => {
-    //         if (authUser) {
-    //             const docRef = db.collection("users").doc(authUser.uid);
-
-    //             docRef.get().then(doc => {
-    //                 const dbUser = doc.data();
-    //                 authUser = { ...authUser, ...dbUser };
-    //                 setCurrentUser(authUser);
-    //             });
-    //         }
-    //     });
-    // }, []);
     useEffect(() => {
         console.log("USE EFFECT");
-        firebase.auth.onAuthStateChanged(setCurrentUser);
-    }, [firebase.auth]);
+        // firebase.auth.onAuthStateChanged(setCurrentUser);
+        firebase.onAuthUserListener(setCurrentUser, () => {
+            setCurrentUser(null);
+        });
+    }, [firebase, firebase.auth]);
 
     return (
         <AuthContext.Provider value={{ currentUser }}>

@@ -5,17 +5,17 @@ import { withFirebase } from "../Firebase";
 import Wrapper from "../Wrapper";
 import VideoListItem from "../VideoListItem";
 
-const ConferenceDetail = ({ firebase }) => {
+const ConferenceDetail = ({ firebase, data }) => {
     const [conferenceData, setConferenceData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
-    let { id } = useParams();
+    let { uid } = useParams();
 
     useEffect(() => {
         setIsLoading(true);
         firebase
             .conferences()
-            .doc(id)
+            .doc(uid)
             .get()
             .then(doc => {
                 if (doc.exists) {
@@ -27,7 +27,7 @@ const ConferenceDetail = ({ firebase }) => {
                     setIsLoading(false);
                 }
             });
-    }, [id, firebase]);
+    }, [uid, firebase]);
 
     if (isLoading) return <div>Is Loading...</div>;
     return (

@@ -23,9 +23,6 @@ const Header = ({ firebase }) => {
                     />
                 </div>
                 <nav className="site-header__navigation">
-                    {currentUser.role === "Admin" && (
-                        <Link to="/admin">Admin</Link>
-                    )}
                     <Link to="/dashboard">Dashboard</Link>
                     <Link to="/admin">Admin</Link>
                     <button className="button" onClick={handleSignOut}>

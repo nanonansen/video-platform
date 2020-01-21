@@ -64,7 +64,8 @@ const AddVideo = ({ firebase }) => {
         };
         const videoRefObj = {
             name: formData.name,
-            uid: videoUid.id
+            uid: videoUid.id,
+            videoUrl: formData.videoUrl
         };
 
         let confRef = firebase.conferences().doc(confId);
@@ -95,7 +96,8 @@ const AddVideo = ({ firebase }) => {
                 querySnapshot.forEach(doc => {
                     conferences.push({
                         name: doc.data().name,
-                        uid: doc.id
+                        uid: doc.id,
+                        videoUrl: doc.data().videoUrl
                     });
                 });
             })

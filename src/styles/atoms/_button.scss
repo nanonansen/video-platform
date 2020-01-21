@@ -20,6 +20,13 @@
             background: darken($color: $primary, $amount: 5);
         }
     }
+    &--disabled {
+        background: $gray;
+        color: $darkgray;
+        &:hover {
+            background: darken($color: $gray, $amount: 5);
+        }
+    }
     &--google-signup {
         display: flex;
         justify-content: center;

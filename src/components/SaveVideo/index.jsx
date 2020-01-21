@@ -1,22 +1,20 @@
 import React from "react";
+import { withFirebase } from "../Firebase";
 
-const SaveVideo = () => {
-    // const handleAddLike = (id, currentLikes, uid) => {
-    //     db.collection("videos")
-    //         .doc(id)
-    //         .update({
-    //             likes: currentLikes + 1
-    //         })
-    //         .then(function() {
-    //             console.log("Document successfully updated!");
-    //         })
-    //         .catch(function(error) {
-    //             // The document probably doesn't exist.
-    //             console.error("Error updating document: ", error);
-    //         });
-    //db.collection("users")
-    // };
-    return <button className="button button--save">Save</button>;
+import Button from "../Button";
+
+const SaveVideo = ({ isSaved, handleSave, handleRemove, saveCount }) => {
+    if (isSaved)
+        return (
+            <Button onClick={handleRemove} className={"button--disabled"}>
+                Remove - {saveCount}
+            </Button>
+        );
+    return (
+        <Button onClick={handleSave} className={"button--primary"}>
+            Save - {saveCount}
+        </Button>
+    );
 };
 
-export default SaveVideo;
+export default withFirebase(SaveVideo);

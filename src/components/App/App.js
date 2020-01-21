@@ -28,7 +28,7 @@ function App() {
                 <Route exact path="/video/:id" component={VideoDetail} />
                 <Route
                     exact
-                    path="/conference/:id"
+                    path="/conference/:uid"
                     component={ConferenceDetail}
                 />
                 <Route exact path={"/admin/add_video"} component={AddVideo} />

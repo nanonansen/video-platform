@@ -21,6 +21,7 @@ class Firebase {
 
         this.fieldValue = app.firestore.FieldValue;
 
+        // *** Social Auth Provider ***
         this.googleProvider = new app.auth.GoogleAuthProvider();
     }
 
@@ -35,6 +36,7 @@ class Firebase {
 
     doSignOut = () => this.auth.signOut();
 
+    // *** Create new Document ***
     doCreateDocument = (collection, docID, data) => {
         this.db
             .collection(collection)
@@ -48,11 +50,63 @@ class Firebase {
             });
     };
 
+    // *** Save and Remove Video from User *** //
+    doSaveVideoToUserDoc = (userId, videoData, videoId) => {
+        let videoRef = this.video(videoId);
+        let batch = this.db.batch();
+
+        batch.update(videoRef, { saveCount: this.fieldValue.increment(1) });
+        batch.update(videoRef, {
+            users: this.fieldValue.arrayUnion(userId)
+        });
+        // Commit the batch
+        batch.commit().then(() => {
+            console.log("Success");
+        });
+    };
+    doRemoveUserFromVideo = (userId, videoId) => {
+        let videoRef = this.video(videoId);
+        let batch = this.db.batch();
+        batch.update(videoRef, { saveCount: this.fieldValue.increment(-1) });
+        batch.update(videoRef, {
+            users: this.fieldValue.arrayRemove(userId)
+        });
+        batch.commit().then(() => {
+            console.log("Successfully Removed");
+        });
+    };
+
+    // *** Merge Auth and DB User API *** //
+    onAuthUserListener = (next, fallback) =>
+        this.auth.onAuthStateChanged(authUser => {
+            if (authUser) {
+                this.user(authUser.uid)
+                    .get()
+                    .then(snapshot => {
+                        const dbUser = snapshot.data();
+
+                        // merge auth and db user
+                        authUser = {
+                            uid: authUser.uid,
+                            email: authUser.email,
+                            emailVerified: authUser.emailVerified,
+                            providerData: authUser.providerData,
+                            ...dbUser
+                        };
+
+                        next(authUser);
+                    });
+            } else {
+                fallback();
+            }
+        });
+
     /* User API */
     user = uid => this.db.doc(`users/${uid}`);
 
     /* Video API */
-    videos = () => this.db.collection("videos");
+    video = uid => this.db.doc(`videos/${uid}`);
+    videos = uid => this.db.collection("videos");
 
     /* Conferences API */
     conferences = () => this.db.collection("conferences");

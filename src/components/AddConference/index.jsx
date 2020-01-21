@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 
 import Input from "../Input";
@@ -12,6 +13,9 @@ const AddConference = ({ firebase }) => {
         location: "",
         url: ""
     });
+
+    let history = useHistory();
+
     const handleInputChange = e => {
         let name = e.target.name;
         let value = e.target.value;
@@ -43,6 +47,7 @@ const AddConference = ({ firebase }) => {
                 .catch(error => {
                     console.log(error);
                 });
+            history.push("/dashboard");
         } catch (error) {
             console.log(error);
         }
