@@ -17,27 +17,26 @@ const VideoDetail = ({ firebase }) => {
     let { id } = useParams();
     let { currentUser } = useContext(AuthContext);
 
-    useEffect(() => {
-        console.log("VideoDetail USE EFFECT");
-        setIsLoading(true);
-        firebase
-            .videos()
-            .doc(id)
-            .get()
-            .then(doc => {
-                if (doc.exists) {
-                    setVideoData(doc.data());
-                    setIsLoading(false);
-                } else {
-                    console.log("doc not found");
-                    setIsLoading(false);
-                }
-            });
-    }, [firebase, id]);
+    // useEffect(() => {
+    //     console.log("VideoDetail USE EFFECT");
+    //     setIsLoading(true);
+    //     firebase
+    //         .videos()
+    //         .doc(id)
+    //         .get()
+    //         .then(doc => {
+    //             if (doc.exists) {
+    //                 setVideoData(doc.data());
+    //                 setIsLoading(false);
+    //             } else {
+    //                 console.log("doc not found");
+    //                 setIsLoading(false);
+    //             }
+    //         });
+    // }, [firebase, id]);
 
     useEffect(() => {
         console.log("VideoDetail USE EFFECT");
-        console.log("currentUser", currentUser);
 
         setIsLoading(true);
         if (currentUser !== null) {
@@ -46,6 +45,7 @@ const VideoDetail = ({ firebase }) => {
                 .doc(id)
                 .onSnapshot(function(doc) {
                     if (doc.exists) {
+                        console.log("Read");
                         setVideoData(doc.data());
                         if (doc.data().users) {
                             const currentUserID = firebase.getCurrentUserID();
@@ -67,6 +67,17 @@ const VideoDetail = ({ firebase }) => {
             return () => {
                 cleanUp();
             };
+        } else {
+            firebase
+                .videos()
+                .doc(id)
+                .get()
+                .then(doc => {
+                    console.log("READ");
+
+                    setVideoData(doc.data());
+                    setIsLoading(false);
+                });
         }
     }, [firebase, currentUser, id]);
 
@@ -131,13 +142,32 @@ const VideoDetail = ({ firebase }) => {
                             <Button className="button--primary">Save</Button>
                         </Link>
                     )}
+                    <Button>Share</Button>
 
                     <h1 className="fs-xl">{videoData.name}</h1>
-                    <p>{videoData.speaker}</p>
+                    <Link to={`/speaker/${videoData.speaker.uid}`}>
+                        {videoData.speaker.name}
+                    </Link>
+
                     <Link to={`/conference/${videoData.conference.uid}`}>
-                        {videoData.conference.name}
+                        <p>{videoData.conference.name}</p>
                     </Link>
                     <p>{videoData.description}</p>
+                    <p>Likes: {videoData.users.length}</p>
+                    <div className="video__tags">
+                        {videoData.tags &&
+                            videoData.tags.map(tag => {
+                                let tagUrl = tag
+                                    .toLowerCase()
+                                    .split(" ")
+                                    .join("_");
+                                return (
+                                    <Link to={`/tag/${tagUrl}`} key={tag}>
+                                        <span className="tag">{tag}</span>
+                                    </Link>
+                                );
+                            })}
+                    </div>
                 </div>
             </div>
             <Wrapper>

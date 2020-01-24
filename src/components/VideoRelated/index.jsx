@@ -9,15 +9,18 @@ const VideoRelated = ({ firebase, category }) => {
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         setIsLoading(true);
-        const videoRef = firebase.videos();
-        videoRef
+        firebase
+            .videos()
             .where("categories", "==", category)
             .orderBy("date", "asc")
-            .limit(4)
+            .limit(3)
             .get()
             .then(querySnapshot => {
                 const videos = [];
+                console.log("************RELATED POSTS************");
                 querySnapshot.forEach(doc => {
+                    console.log("READ");
+
                     videos.push(doc.data());
                     setIsLoading(false);
                 });

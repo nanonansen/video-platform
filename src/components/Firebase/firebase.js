@@ -106,11 +106,15 @@ class Firebase {
 
     /* Video API */
     video = uid => this.db.doc(`videos/${uid}`);
-    videos = uid => this.db.collection("videos");
+    videos = () => this.db.collection("videos");
 
     /* Conferences API */
     conferences = () => this.db.collection("conferences");
 
+    /* Speakers API */
+    speakers = uid => this.db.collection("speakers");
+
+    tags = () => this.db.collection("tags");
     //Helper
     getCurrentUserID = () => this.auth.currentUser.uid;
     getCurrentUserEmail = () => this.auth.currentUser.email;

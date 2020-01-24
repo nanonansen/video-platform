@@ -1,0 +1,9 @@
+.tag {
+    border: 1px solid $darkgray;
+    border-radius: 50px;
+    padding: 0.25rem 0.75rem;
+    &:hover {
+        background-color: $darkgray;
+        color: $lightgray;
+    }
+}

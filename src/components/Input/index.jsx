@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 
 const Input = props => {
     const {
@@ -11,7 +12,7 @@ const Input = props => {
     } = props;
     return (
         <input
-            className={className}
+            className={classNames("input", className)}
             type={type || "text"}
             name={name || ""}
             placeholder={placeholder || ""}

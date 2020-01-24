@@ -1,24 +1,33 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import VideoList from "../VideoList";
 import Wrapper from "../Wrapper";
+import { withFirebase } from "../Firebase";
 
-import { StoreContext } from "../../GlobalStore";
-
-const Home = () => {
-    const [videos, setVideos] = useState([]);
-    const { globalStore } = useContext(StoreContext);
+const Home = ({ firebase }) => {
+    const [data, setData] = useState([]);
 
     useEffect(() => {
-        if (globalStore) {
-            setVideos(globalStore);
-        }
-    }, [globalStore]);
+        firebase
+            .videos()
+            .orderBy("date", "desc")
+            .get()
+            .then(querySnapshot => {
+                let videos = [];
+                querySnapshot.forEach(doc => {
+                    console.log("READ");
+
+                    videos.push(doc.data());
+                });
+                setData(videos);
+            });
+    }, [firebase]);
+
     return (
         <Wrapper>
             <h1>Home Component</h1>
-            <VideoList data={videos} />
+            <VideoList data={data} />
         </Wrapper>
     );
 };
 
-export default Home;
+export default withFirebase(Home);

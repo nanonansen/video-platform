@@ -20,6 +20,8 @@ const DashBoard = ({ firebase }) => {
                 .then(querySnapshot => {
                     let videos = [];
                     querySnapshot.forEach(doc => {
+                        console.log("READ");
+
                         videos.push(doc.data());
                     });
                     setUserVideos(videos);

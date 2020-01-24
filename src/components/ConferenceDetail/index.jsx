@@ -11,34 +11,50 @@ const ConferenceDetail = ({ firebase, data }) => {
 
     let { uid } = useParams();
 
+    // useEffect(() => {
+    //     setIsLoading(true);
+    //     firebase
+    //         .conferences()
+    //         .doc(uid)
+    //         .get()
+    //         .then(doc => {
+    //             if (doc.exists) {
+    //                 console.log("doc", doc.data());
+    //                 setConferenceData(doc.data());
+    //                 setIsLoading(false);
+    //             } else {
+    //                 console.log("doc not found");
+    //                 setIsLoading(false);
+    //             }
+    //         });
+    // }, [uid, firebase]);
+
     useEffect(() => {
-        setIsLoading(true);
         firebase
-            .conferences()
-            .doc(uid)
+            .videos()
+            .where("conference.uid", "==", uid)
             .get()
-            .then(doc => {
-                if (doc.exists) {
-                    console.log("doc", doc.data());
-                    setConferenceData(doc.data());
-                    setIsLoading(false);
-                } else {
-                    console.log("doc not found");
-                    setIsLoading(false);
-                }
+            .then(querySnapshot => {
+                let videos = [];
+                querySnapshot.forEach(video => {
+                    console.log("Read");
+                    videos.push(video.data());
+                });
+                setConferenceData(videos);
+                setIsLoading(false);
             });
-    }, [uid, firebase]);
+    }, [firebase, uid]);
 
     if (isLoading) return <div>Is Loading...</div>;
     return (
         <Wrapper>
-            <h1>{conferenceData.name}</h1>
-            <p>{conferenceData.description}</p>
-            {conferenceData.videos && (
+            <h1>{conferenceData[0].conference.name}</h1>
+            {/* <p>{conferenceData.description}</p> */}
+            {conferenceData && (
                 <div>
                     <h2>All Videos</h2>
                     <div className="auto-grid">
-                        {conferenceData.videos.map(video => (
+                        {conferenceData.map(video => (
                             <VideoListItem data={video} key={video.uid} />
                         ))}
                     </div>

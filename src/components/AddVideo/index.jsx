@@ -13,6 +13,7 @@ const AddVideo = ({ firebase }) => {
         duration: 25,
         year: 2020,
         categories: ["Design", "UX-Design"],
+        tags: [],
         conferences: [],
         speaker: ""
     });
@@ -23,7 +24,9 @@ const AddVideo = ({ firebase }) => {
         duration: 25,
         year: 2020,
         categories: [],
+        tags: [],
         conference: [],
+        users: [],
         speaker: ""
     });
     const [selectValue, setSelectValue] = useState({ name: "", uid: null });
@@ -41,6 +44,22 @@ const AddVideo = ({ firebase }) => {
     const handleSelectChange = e => {
         let id = e.target.options[e.target.selectedIndex].dataset.id;
         setSelectValue({ name: e.target.value, uid: id });
+    };
+
+    const handleCheckboxChange = e => {
+        const item = e.target.name;
+        let tags = formData.tags;
+
+        console.log(e.currentTarget.checked);
+        if (!tags.includes(item)) {
+            tags.push(item);
+        } else {
+            tags = tags.filter(el => el !== item);
+        }
+        setFormData(prevState => ({
+            ...prevState,
+            tags
+        }));
     };
 
     const handleFormSubmit = e => {
@@ -107,6 +126,21 @@ const AddVideo = ({ firebase }) => {
                     conferences: conferences
                 }));
             });
+
+        const getAllTags = () => {
+            firebase
+                .tags()
+                .get()
+                .then(querySnapshot => {
+                    let tags = [];
+                    querySnapshot.forEach(tag => tags.push(tag.data().name));
+                    setInitialFormData(prevState => ({
+                        ...prevState,
+                        tags: tags
+                    }));
+                });
+        };
+        getAllTags();
     }, [firebase]);
 
     return (
@@ -114,6 +148,25 @@ const AddVideo = ({ firebase }) => {
             <h1 className="fs-xl">Submit new Video</h1>
             <form onSubmit={handleFormSubmit}>
                 {Object.keys(initialFormData).map((input, index) => {
+                    if (input === "tags") {
+                        return (
+                            <div key={index}>
+                                {input}
+                                {initialFormData[input].map(tag => {
+                                    return (
+                                        <label key={tag}>
+                                            <input
+                                                type="checkbox"
+                                                name={tag}
+                                                onChange={handleCheckboxChange}
+                                            />
+                                            {tag}
+                                        </label>
+                                    );
+                                })}
+                            </div>
+                        );
+                    }
                     if (input === "conferences") {
                         return (
                             <label htmlFor={input} key={index}>

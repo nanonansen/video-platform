@@ -7,9 +7,10 @@ const AuthProvider = ({ children, firebase }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        console.log("USE EFFECT");
+        console.log("USE EFFECT AUTH");
         // firebase.auth.onAuthStateChanged(setCurrentUser);
         firebase.onAuthUserListener(setCurrentUser, () => {
+            console.log("onAuthUserListener");
             setCurrentUser(null);
         });
     }, [firebase, firebase.auth]);

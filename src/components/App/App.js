@@ -13,6 +13,9 @@ import VideoDetail from "../VideoDetail";
 import ConferenceDetail from "../ConferenceDetail";
 import AddVideo from "../AddVideo";
 import AddConference from "../AddConference";
+import SpeakerDetail from "../SpeakerDetail";
+import TagDetail from "../TagDetail";
+import AddYoutubeVideo from "../AddYoutubeVideo";
 
 function App() {
     return (
@@ -31,7 +34,14 @@ function App() {
                     path="/conference/:uid"
                     component={ConferenceDetail}
                 />
+                <Route exact path="/speaker/:uid" component={SpeakerDetail} />
+                <Route exact path="/tag/:uid" component={TagDetail} />
                 <Route exact path={"/admin/add_video"} component={AddVideo} />
+                <Route
+                    exact
+                    path={"/admin/add_youtubeVideo"}
+                    component={AddYoutubeVideo}
+                />
                 <Route
                     exact
                     path={"/admin/add_conference"}
