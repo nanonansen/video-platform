@@ -8,17 +8,24 @@ const Input = props => {
         placeholder,
         autoComplete,
         className,
-        onChange
+        onChange,
+        value,
+        label
     } = props;
     return (
-        <input
-            className={classNames("input", className)}
-            type={type || "text"}
-            name={name || ""}
-            placeholder={placeholder || ""}
-            autoComplete={autoComplete ? "true" : "not"}
-            onChange={onChange}
-        />
+        <label>
+            {label}
+
+            <input
+                className={classNames("input", className)}
+                type={type || "text"}
+                name={name || ""}
+                placeholder={placeholder || ""}
+                autoComplete={autoComplete ? "true" : "not"}
+                onChange={onChange}
+                value={value}
+            />
+        </label>
     );
 };
 

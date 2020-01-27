@@ -1,46 +1,17 @@
 import React, { useState } from "react";
-import moment from "moment";
 
+import useFetch from "../../useFetch";
 import Input from "../Input";
+import Button from "../Button";
 import Wrapper from "../Wrapper";
 
+import AddNewVideoForm from "../AddNewVideoForm";
+
 const AddYoutubeVideo = () => {
-    const [searchValue, setSearchValue] = useState("r7wXvvxXTHI");
-    const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState(null);
+    const [searchValue, setSearchValue] = useState("");
+    const [{ data, isLoading, isError }, setUrl] = useFetch();
 
     const ytAPIKey = process.env.REACT_APP_YOUTUBE_API_KEY;
-
-    const fetchVideo = videoID => {
-        setIsLoading(true);
-        const baseURL =
-            "https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=";
-        let url = baseURL + videoID + "&key=" + ytAPIKey;
-        fetch(url)
-            .then(response => {
-                if (response.status !== 200) {
-                    throw new Error("Bad Response from Server");
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("data", data.items);
-                setIsLoading(false);
-                let videoObj = {
-                    name: data.items[0].snippet.title,
-                    description: data.items[0].snippet.description,
-                    id: data.items[0].id,
-                    duration: moment
-                        .duration(data.items[0].contentDetails.duration)
-                        .asMinutes(),
-                    thumbnail: data.items[0].snippet.thumbnails.maxres.url,
-                    date: data.items[0].snippet.publishedAt
-                };
-                console.log(videoObj);
-
-                setData(videoObj);
-            });
-    };
 
     const handleInputChange = e => {
         setSearchValue(e.target.value);
@@ -48,14 +19,19 @@ const AddYoutubeVideo = () => {
     const onSubmit = e => {
         e.preventDefault();
         console.log("Submit");
-        fetchVideo(searchValue);
+
+        const baseURL =
+            "https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=";
+        let url = baseURL + searchValue + "&key=" + ytAPIKey;
+
+        setUrl(url);
     };
-    if (isLoading) return <div>Is Loading...</div>;
+    console.log("Component Render");
+    console.log("isError", isError);
+
     return (
         <Wrapper className="wrapper--small">
-            <h1>Add Video</h1>
-
-            <form action="submit" onSubmit={onSubmit}>
+            <form onSubmit={onSubmit}>
                 <label>
                     Add Youtube ID:
                     <Input
@@ -65,13 +41,21 @@ const AddYoutubeVideo = () => {
                         placeholder="Enter Youtube Video ID"
                     />
                 </label>
+                <Button
+                    disabled={searchValue.length >= 1 ? false : true}
+                    type={"submit"}
+                    className="button--primary"
+                >
+                    Search
+                </Button>
+                {isError && <div>Error: {isError}</div>}
             </form>
-            <h2>Fetched Video:</h2>
-            {data && (
-                <div>
-                    <h3>{data.name}</h3>
-                    <img src={data.thumbnail} alt={data.name} />
-                </div>
+
+            {isLoading ? null : (
+                <>
+                    <h2>Fetched Video:</h2>
+                    <AddNewVideoForm data={data.video} />
+                </>
             )}
         </Wrapper>
     );

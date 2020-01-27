@@ -31,16 +31,21 @@ const ConferenceDetail = ({ firebase, data }) => {
 
     useEffect(() => {
         firebase
-            .videos()
-            .where("conference.uid", "==", uid)
+            .conferences()
+            .where("uid", "==", uid)
             .get()
             .then(querySnapshot => {
-                let videos = [];
-                querySnapshot.forEach(video => {
+                let conferenceData = {};
+                querySnapshot.forEach(conference => {
                     console.log("Read");
-                    videos.push(video.data());
+                    console.log("Conference Videos:", conference.data().videos);
+                    conferenceData.name = conference.data().name;
+                    conferenceData.description = conference.data().description;
+                    conferenceData.videos = conference.data().videos;
                 });
-                setConferenceData(videos);
+                console.log(conferenceData);
+
+                setConferenceData(conferenceData);
                 setIsLoading(false);
             });
     }, [firebase, uid]);
@@ -48,13 +53,13 @@ const ConferenceDetail = ({ firebase, data }) => {
     if (isLoading) return <div>Is Loading...</div>;
     return (
         <Wrapper>
-            <h1>{conferenceData[0].conference.name}</h1>
-            {/* <p>{conferenceData.description}</p> */}
+            <h1>{conferenceData.name}</h1>
+            <p>{conferenceData.description}</p>
             {conferenceData && (
                 <div>
                     <h2>All Videos</h2>
                     <div className="auto-grid">
-                        {conferenceData.map(video => (
+                        {conferenceData.videos.map(video => (
                             <VideoListItem data={video} key={video.uid} />
                         ))}
                     </div>

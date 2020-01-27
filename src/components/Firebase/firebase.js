@@ -110,11 +110,36 @@ class Firebase {
 
     /* Conferences API */
     conferences = () => this.db.collection("conferences");
+    getConferences = () => {
+        let conferences = [];
+        this.conferences()
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(conference => {
+                    conferences.push(conference.data());
+                });
+            });
+        return conferences;
+    };
 
     /* Speakers API */
-    speakers = uid => this.db.collection("speakers");
+    speakers = () => this.db.collection("speakers");
 
+    /* Tags API */
     tags = () => this.db.collection("tags");
+
+    getTags = () => {
+        let tags = [];
+        this.tags()
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(tag => {
+                    tags.push(tag.data());
+                });
+            });
+        return Promise.resolve(tags);
+    };
+
     //Helper
     getCurrentUserID = () => this.auth.currentUser.uid;
     getCurrentUserEmail = () => this.auth.currentUser.email;

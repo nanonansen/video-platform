@@ -17,24 +17,6 @@ const VideoDetail = ({ firebase }) => {
     let { id } = useParams();
     let { currentUser } = useContext(AuthContext);
 
-    // useEffect(() => {
-    //     console.log("VideoDetail USE EFFECT");
-    //     setIsLoading(true);
-    //     firebase
-    //         .videos()
-    //         .doc(id)
-    //         .get()
-    //         .then(doc => {
-    //             if (doc.exists) {
-    //                 setVideoData(doc.data());
-    //                 setIsLoading(false);
-    //             } else {
-    //                 console.log("doc not found");
-    //                 setIsLoading(false);
-    //             }
-    //         });
-    // }, [firebase, id]);
-
     useEffect(() => {
         console.log("VideoDetail USE EFFECT");
 
@@ -144,14 +126,30 @@ const VideoDetail = ({ firebase }) => {
                     )}
                     <Button>Share</Button>
 
-                    <h1 className="fs-xl">{videoData.name}</h1>
-                    <Link to={`/speaker/${videoData.speaker.uid}`}>
-                        {videoData.speaker.name}
-                    </Link>
-
-                    <Link to={`/conference/${videoData.conference.uid}`}>
-                        <p>{videoData.conference.name}</p>
-                    </Link>
+                    <h1 className="fs-xl">{videoData.title}</h1>
+                    {videoData.speaker.map(speaker => {
+                        return (
+                            <Link
+                                to={`/speaker/${speaker.uid}`}
+                                key={speaker.uid}
+                            >
+                                {speaker.name}
+                            </Link>
+                        );
+                    })}
+                    <div className="conference-avatar">
+                        <img
+                            className="conference-avatar__image"
+                            src={videoData.conference.profileImage}
+                            alt=""
+                        />
+                        <Link
+                            className="conference-avatar__name"
+                            to={`/conference/${videoData.conference.uid}`}
+                        >
+                            {videoData.conference.name}
+                        </Link>
+                    </div>
                     <p>{videoData.description}</p>
                     <p>Likes: {videoData.users.length}</p>
                     <div className="video__tags">

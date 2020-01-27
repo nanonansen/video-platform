@@ -5,7 +5,11 @@ const Button = props => {
     const { type, children, className, onClick, disabled } = props;
     return (
         <button
-            className={classNames("button", className)}
+            className={classNames(
+                "button",
+                { "is-disabled": disabled },
+                className
+            )}
             type={type || null}
             onClick={onClick}
             disabled={disabled}

@@ -10,8 +10,8 @@ const AddConference = ({ firebase }) => {
     const [formData, setFormData] = useState({
         name: "",
         description: "",
-        location: "",
-        url: ""
+        url: "",
+        profileImage: ""
     });
 
     let history = useHistory();
@@ -30,17 +30,21 @@ const AddConference = ({ firebase }) => {
         doAddConferenceToCollection();
     };
     const doAddConferenceToCollection = async () => {
+        let newConfRef = firebase.conferences().doc();
+
         const newConferenceData = {
             ...formData,
             date: Date.now(),
             followers: [],
             videos: [],
-            speakers: []
+            speakers: [],
+            uid: newConfRef.id
         };
         try {
             await firebase
                 .conferences()
-                .add(newConferenceData)
+                .doc(newConfRef.id)
+                .set(newConferenceData)
                 .then(docRef => {
                     console.log("Document written with ID: ", docRef.id);
                 })

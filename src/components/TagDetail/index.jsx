@@ -7,19 +7,21 @@ import VideoList from "../VideoList";
 
 const TagDetail = ({ firebase }) => {
     const [data, setData] = useState(null);
+    const [tagName, setTagName] = useState(null);
     const { uid } = useParams();
 
     useEffect(() => {
-        let tagName = uid.replace("_", " ");
-        let newtagname = tagName
+        let tagname = uid
+            .replace("_", " ")
             .split(" ")
             .map(w => w[0].toUpperCase() + w.substr(1).toLowerCase())
             .join(" ");
-        console.log(newtagname);
+        console.log(tagname);
+        setTagName(tagname);
 
         firebase
             .videos()
-            .where("tags", "array-contains", newtagname)
+            .where("tags", "array-contains", tagname)
             .get()
             .then(querySnapshot => {
                 console.log("********TAG PAGE*******");
@@ -34,7 +36,7 @@ const TagDetail = ({ firebase }) => {
 
     return (
         <Wrapper>
-            <h1>Tag Detail</h1>
+            <h1>Videos in {tagName}</h1>
             <VideoList data={data} />
         </Wrapper>
     );
