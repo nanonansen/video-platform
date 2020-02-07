@@ -16,6 +16,7 @@ import AddConference from "../AddConference";
 import SpeakerDetail from "../SpeakerDetail";
 import TagDetail from "../TagDetail";
 import AddYoutubeVideo from "../AddYoutubeVideo";
+import Styleguide from "../Styleguide";
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                 <PrivateRoute exact path="/admin" component={Admin} />
 
                 <Route exact path="/" component={Home} />
+                <Route exact path="/styleguide" component={Styleguide} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={SignUp} />
                 <Route exact path="/video/:id" component={VideoDetail} />
