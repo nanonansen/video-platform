@@ -4,31 +4,14 @@ import { withFirebase } from "../Firebase";
 
 import Wrapper from "../Wrapper";
 import VideoListItem from "../VideoListItem";
+import Text from "../Text";
+import Button from "../Button";
 
 const ConferenceDetail = ({ firebase, data }) => {
     const [conferenceData, setConferenceData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
     let { uid } = useParams();
-
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     firebase
-    //         .conferences()
-    //         .doc(uid)
-    //         .get()
-    //         .then(doc => {
-    //             if (doc.exists) {
-    //                 console.log("doc", doc.data());
-    //                 setConferenceData(doc.data());
-    //                 setIsLoading(false);
-    //             } else {
-    //                 console.log("doc not found");
-    //                 setIsLoading(false);
-    //             }
-    //         });
-    // }, [uid, firebase]);
-
     useEffect(() => {
         firebase
             .conferences()
@@ -37,13 +20,11 @@ const ConferenceDetail = ({ firebase, data }) => {
             .then(querySnapshot => {
                 let conferenceData = {};
                 querySnapshot.forEach(conference => {
-                    console.log("Read");
-                    console.log("Conference Videos:", conference.data().videos);
                     conferenceData.name = conference.data().name;
                     conferenceData.description = conference.data().description;
                     conferenceData.videos = conference.data().videos;
+                    conferenceData.profileImage = conference.data().profileImage;
                 });
-                console.log(conferenceData);
 
                 setConferenceData(conferenceData);
                 setIsLoading(false);
@@ -52,20 +33,51 @@ const ConferenceDetail = ({ firebase, data }) => {
 
     if (isLoading) return <div>Is Loading...</div>;
     return (
-        <Wrapper>
-            <h1>{conferenceData.name}</h1>
-            <p>{conferenceData.description}</p>
-            {conferenceData && (
-                <div>
-                    <h2>All Videos</h2>
-                    <div className="auto-grid">
-                        {conferenceData.videos.map(video => (
-                            <VideoListItem data={video} key={video.uid} />
-                        ))}
+        <main className="page-conference">
+            <section className="hero-header hero-header--medium">
+                <Wrapper medium>
+                    <div className="hero-header__content">
+                        {conferenceData.profileImage && (
+                            <figure className="hero-header__image">
+                                <img src={conferenceData.profileImage} alt="" />
+                            </figure>
+                        )}
+
+                        <Text rank={1} headline light>
+                            {conferenceData.name}
+                        </Text>
+                        <Text light>{conferenceData.description}</Text>
+                        <div className="button-group">
+                            <Button medium light>
+                                Follow
+                            </Button>
+                            <Button medium light>
+                                Website
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            )}
-        </Wrapper>
+                </Wrapper>
+            </section>
+            <section className="content">
+                <Wrapper>
+                    {conferenceData && (
+                        <section className="conference__videos">
+                            <Text rank={2} subtitle>
+                                All Videos
+                            </Text>
+                            <div className="auto-grid">
+                                {conferenceData.videos.map(video => (
+                                    <VideoListItem
+                                        data={video}
+                                        key={video.uid}
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    )}
+                </Wrapper>
+            </section>
+        </main>
     );
 };
 

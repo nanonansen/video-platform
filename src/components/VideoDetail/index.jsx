@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 import { AuthContext } from "../../Auth";
-import ReactPlayer from "react-player";
 
 import Wrapper from "../Wrapper";
-import SaveVideo from "../SaveVideo";
-import Button from "../Button";
+
+import VideoMeta from "./VideoMeta";
+import VideoPlayer from "../VideoPlayer";
 // import VideoRelated from "../VideoRelated";
 
 const VideoDetail = ({ firebase }) => {
@@ -18,8 +18,6 @@ const VideoDetail = ({ firebase }) => {
     let { currentUser } = useContext(AuthContext);
 
     useEffect(() => {
-        console.log("VideoDetail USE EFFECT");
-
         setIsLoading(true);
         if (currentUser !== null) {
             const cleanUp = firebase
@@ -86,90 +84,18 @@ const VideoDetail = ({ firebase }) => {
 
     if (isLoading) return <Wrapper>Is Loading...</Wrapper>;
     return (
-        <main>
-            <div className="videoWrapper">
-                <div className="video__player">
-                    <div className="video__player-wrapper">
-                        <ReactPlayer
-                            className="react-player"
-                            width="100%"
-                            height="100%"
-                            url={videoData.videoUrl}
-                            light={true}
-                            config={{
-                                youtube: {
-                                    playerVars: {
-                                        showinfo: 0,
-                                        controls: 0,
-                                        fs: 0,
-                                        modestbranding: 1,
-                                        rel: 0
-                                    }
-                                }
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="video__meta">
-                    {currentUser !== null ? (
-                        <SaveVideo
-                            data={videoData}
-                            isSaved={isSaved}
-                            handleSave={handleSave}
-                            handleRemove={handleRemove}
-                            saveCount={videoData.saveCount}
-                        />
-                    ) : (
-                        <Link to={"/login"}>
-                            <Button className="button--primary">Save</Button>
-                        </Link>
-                    )}
-                    <Button>Share</Button>
-
-                    <h1 className="fs-xl">{videoData.title}</h1>
-                    {videoData.speaker.map(speaker => {
-                        return (
-                            <Link
-                                to={`/speaker/${speaker.uid}`}
-                                key={speaker.uid}
-                            >
-                                {speaker.name}
-                            </Link>
-                        );
-                    })}
-                    <div className="conference-avatar">
-                        <img
-                            className="conference-avatar__image"
-                            src={videoData.conference.profileImage}
-                            alt=""
-                        />
-                        <Link
-                            className="conference-avatar__name"
-                            to={`/conference/${videoData.conference.uid}`}
-                        >
-                            {videoData.conference.name}
-                        </Link>
-                    </div>
-                    <p>{videoData.description}</p>
-                    <p>Likes: {videoData.users.length}</p>
-                    <div className="video__tags">
-                        {videoData.tags &&
-                            videoData.tags.map(tag => {
-                                let tagUrl = tag
-                                    .toLowerCase()
-                                    .split(" ")
-                                    .join("_");
-                                return (
-                                    <Link to={`/tag/${tagUrl}`} key={tag}>
-                                        <span className="tag">{tag}</span>
-                                    </Link>
-                                );
-                            })}
-                    </div>
-                </div>
-            </div>
+        <main className="videodetail">
             <Wrapper>
-                {/* <VideoRelated category={videoData.categories} /> */}
+                <VideoPlayer videoUrl={videoData.videoUrl} />
+            </Wrapper>
+            <Wrapper>
+                <VideoMeta
+                    currentUser={currentUser}
+                    videoData={videoData}
+                    isSaved={isSaved}
+                    handleSave={handleSave}
+                    handleRemove={handleRemove}
+                />
             </Wrapper>
         </main>
     );

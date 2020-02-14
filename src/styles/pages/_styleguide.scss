@@ -1,0 +1,20 @@
+.styleguide {
+    padding-top: 64px;
+    .page-title {
+        margin-bottom: 64px;
+    }
+    section {
+        margin-bottom: 64px;
+    }
+    &__section-header {
+        margin-bottom: 32px;
+        border-top: 1px solid $darkgray;
+    }
+    h2,
+    p {
+        margin-bottom: 32px;
+    }
+    .button {
+        margin-right: 8px;
+    }
+}

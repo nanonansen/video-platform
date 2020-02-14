@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 
 import Wrapper from "../Wrapper";
 import VideoList from "../VideoList";
+import Text from "../Text";
 
 const TagDetail = ({ firebase }) => {
     const [data, setData] = useState(null);
@@ -35,10 +36,18 @@ const TagDetail = ({ firebase }) => {
     }, [firebase, uid]);
 
     return (
-        <Wrapper>
-            <h1>Videos in {tagName}</h1>
-            <VideoList data={data} />
-        </Wrapper>
+        <main className="page-tag">
+            <div className="archive-header">
+                <Wrapper>
+                    <Text rank={1} subtitle>
+                        Videos in <span>{tagName}</span>
+                    </Text>
+                </Wrapper>
+            </div>
+            <Wrapper>
+                <VideoList data={data} />
+            </Wrapper>
+        </main>
     );
 };
 

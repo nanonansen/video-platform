@@ -1,0 +1,12 @@
+.avatar {
+    display: flex;
+    align-items: center;
+    &__image {
+        width: 40px;
+        height: 40px;
+        border-radius: 50px;
+        margin-right: 12px;
+    }
+    &__name {
+    }
+}

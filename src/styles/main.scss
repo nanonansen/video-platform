@@ -12,13 +12,19 @@
 
 //Layout
 @import "./components/wrapper";
+@import "./base/layout";
 
 //Components
 @import "./components/header";
 @import "./components/signup";
 @import "./components/login";
 @import "./components/video-player";
-@import "./components/conference-avatar";
+@import "./components/video-card";
+@import "./components/avatar";
+@import "./components/hero-header";
+@import "./components/tag-bar";
 
 //Pages
 @import "./pages/videodetail";
+@import "./pages/styleguide";
+@import "./pages/tag-detail";

@@ -1,0 +1,45 @@
+.video-card {
+    &__image-container {
+        position: relative;
+    }
+    &__playicon {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        background: $primary;
+        width: 48px;
+        height: 48px;
+        transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        opacity: 0;
+        svg {
+            margin-left: 4px;
+        }
+    }
+    &__timestamp {
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+        color: $white;
+        font-size: 13px;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 0.1em 0.4em;
+        border-radius: 2px;
+    }
+    &__image-container {
+        margin-bottom: 8px;
+        &:hover {
+            //opacity: 0.8;
+            .video-card__playicon {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__title {
+        font-weight: 500;
+    }
+}

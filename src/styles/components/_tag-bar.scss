@@ -1,0 +1,16 @@
+.tag-bar {
+    min-height: 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 48px;
+    position: sticky;
+    top: 72px;
+    z-index: 2;
+    border-bottom: 1px solid $gray;
+    background: $white;
+
+    .button {
+        margin: 0 4px;
+    }
+}

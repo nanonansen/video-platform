@@ -1,29 +1,34 @@
 import React from "react";
+import classNames from "classnames";
 
-const Text = ({ rank = 2, type, children }) => {
-    console.log(type);
-
+const Text = ({
+    rank,
+    children,
+    light,
+    bold,
+    standard,
+    hero,
+    headline,
+    subtitle,
+    large,
+    className
+}) => {
     let Tag;
-    switch (type) {
-        case "standard":
-            Tag = "p";
-            return <Tag className={`text-${type}`}>{children}</Tag>;
-        case "large":
-            Tag = "p";
-            return <Tag className={`text-${type}`}>{children}</Tag>;
-        case "headline":
-            Tag = rank > 6 ? "h6" : `h${rank}`;
-            return <Tag className={`text-${type}`}>{children}</Tag>;
-        case "subtitle":
-            Tag = rank > 6 ? "h6" : `h${rank}`;
-            return <Tag className={`text-${type}`}>{children}</Tag>;
-        case "hero":
-            Tag = rank > 6 ? "h6" : `h${rank}`;
-            return <Tag className={`text-${type}`}>{children}</Tag>;
-        default:
-            Tag = "p";
-            return <Tag className={`text-standard`}>{children}</Tag>;
+    if (rank) {
+        Tag = rank > 6 ? "h6" : `h${rank}`;
+    } else {
+        Tag = "p";
     }
+    let textClass = classNames(className, {
+        "text--light": light,
+        "text--standard": standard,
+        "text--large": large,
+        "text--headline": headline,
+        "text--subtitle": subtitle,
+        "text--hero": hero,
+        "text--bold": bold
+    });
+    return <Tag className={textClass}>{children}</Tag>;
 };
 
 export default Text;

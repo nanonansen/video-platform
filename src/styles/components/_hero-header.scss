@@ -1,0 +1,47 @@
+.hero-header {
+    min-height: 60vh;
+    background: $primary;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    &--medium {
+        min-height: 40vh;
+    }
+
+    &__content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        max-width: 640px;
+        h1 {
+            margin-bottom: 16px;
+        }
+        p {
+            margin-bottom: 24px;
+        }
+    }
+    &__subtitle {
+        margin-bottom: 16px;
+    }
+    &__image {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-bottom: 24px;
+    }
+    &__search {
+        max-width: 960px;
+        text-align: center;
+        h1 {
+            margin-bottom: 32px;
+        }
+        input {
+            margin-bottom: 32px;
+            min-height: 48px;
+            max-width: 640px;
+        }
+    }
+}
